@@ -1,0 +1,33 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Data (never commit data files)
+data/delta/
+data/checkpoints/
+data/export/
+
+# Dagster
+dagster_pipeline/storage/
+dagster_pipeline/logs/
+dagster_pipeline/schedules/
+.dagster/
+
+# Spark
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Environment
+.env
+*.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
