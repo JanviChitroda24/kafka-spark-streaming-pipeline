@@ -6,6 +6,9 @@ Other modules import from here — never hardcode values.
 
 import os
 
+# Resolve paths relative to repo root — scripts run from src/ but data/ lives at repo root
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
 # --- Kafka / Redpanda ---
 KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:19092")
 KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "stock_trades")
@@ -25,7 +28,7 @@ SPARK_TRIGGER_INTERVAL = "10 seconds"
 WATERMARK_DELAY = "10 seconds"
 
 # --- Delta Lake ---
-DELTA_BASE_PATH = os.getenv("DELTA_BASE_PATH", "./data/delta")
+DELTA_BASE_PATH = os.getenv("DELTA_BASE_PATH", os.path.join(_REPO_ROOT, "data", "delta"))
 DELTA_RAW_TRADES = f"{DELTA_BASE_PATH}/raw_trades"
 DELTA_VWAP_1MIN = f"{DELTA_BASE_PATH}/vwap_1min"
 DELTA_VWAP_5MIN = f"{DELTA_BASE_PATH}/vwap_5min"
