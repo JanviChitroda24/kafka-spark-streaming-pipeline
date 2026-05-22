@@ -1,15 +1,18 @@
 """
-Post-run verification for all 4 Delta tables.
+Delta table verification — all 4 tables + markdown report.
 
-Run after stopping the producer + stream_processor to confirm data landed correctly:
+Run after producer + stream_processor:
   cd src
   python verify_delta.py
 
-Why a separate script instead of checking folders manually:
-- Row counts catch empty tables or silent write failures
-- show(5) validates schema and sample values (VWAP, timestamps, tickers)
-- Reusable in Hour 5 integration test and before Snowflake load
+Output (overwrite each run):
+  docs/delta_verification_report.md
+
+Also prints to console for quick checks during development.
 """
+
+import os
+from datetime import datetime
 
 from config import (
     DELTA_ANOMALY_ALERTS,
@@ -19,12 +22,23 @@ from config import (
 )
 from spark_config import get_spark_session
 
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+REPORT_PATH = os.path.join(_REPO_ROOT, "docs", "delta_verification_report.md")
+
+
+def _pandas_to_markdown(df) -> str:
+    """Convert pandas DataFrame to markdown table (requires tabulate)."""
+    try:
+        return df.to_markdown(index=False)
+    except ImportError:
+        # Fallback if tabulate not installed
+        return df.to_string(index=False)
+
 
 def verify() -> None:
     spark = get_spark_session("DeltaVerifier")
-    spark.sparkContext.setLogLevel("WARN")
+    spark.sparkContext.setLogLevel("ERROR")
 
-    # Maps friendly name → Delta path from config.py (repo-root relative)
     tables = {
         "raw_trades": DELTA_RAW_TRADES,
         "vwap_1min": DELTA_VWAP_1MIN,
@@ -32,27 +46,99 @@ def verify() -> None:
         "anomaly_alerts": DELTA_ANOMALY_ALERTS,
     }
 
-    print("=" * 60)
-    print("DELTA TABLE VERIFICATION")
-    print("=" * 60)
+    lines: list[str] = []
+    lines.append("# Delta Table Verification Report")
+    lines.append(f"\n**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    lines.append("\n---\n")
+
+    summary_counts: dict[str, int | None] = {}
 
     for name, path in tables.items():
         print(f"\n=== {name.upper()} ===")
-        print(f"Path: {path}")
+        lines.append(f"## {name}\n")
+        lines.append(f"**Path:** `{path}`\n")
+
         try:
             df = spark.read.format("delta").load(path)
             row_count = df.count()
+            summary_counts[name] = row_count
+            col_names = df.columns
             print(f"Row count: {row_count:,}")
+
+            lines.append(f"**Row count:** {row_count:,}")
+            lines.append(f"\n**Columns:** {', '.join(col_names)}\n")
+
+            sample = df.limit(5).toPandas()
+            if not sample.empty:
+                lines.append("**Sample rows:**\n")
+                lines.append(_pandas_to_markdown(sample))
+                lines.append("")
+
+            if name == "raw_trades":
+                ticker_counts = (
+                    df.groupBy("ticker")
+                    .count()
+                    .orderBy("count", ascending=False)
+                    .limit(5)
+                    .toPandas()
+                )
+                lines.append("\n**Top 5 tickers by trade count:**\n")
+                lines.append(_pandas_to_markdown(ticker_counts))
+
+                source_counts = df.groupBy("source").count().toPandas()
+                lines.append("\n\n**Events by source:**\n")
+                lines.append(_pandas_to_markdown(source_counts))
+
+            elif name in ("vwap_1min", "vwap_5min"):
+                stats = (
+                    df.select("vwap", "total_volume", "trade_count", "buy_pressure")
+                    .summary("min", "max", "mean")
+                    .toPandas()
+                )
+                lines.append("\n**VWAP statistics:**\n")
+                lines.append(_pandas_to_markdown(stats))
+
+            elif name == "anomaly_alerts":
+                unique_tickers = df.select("ticker").distinct().count()
+                lines.append(f"\n**Unique tickers monitored:** {unique_tickers}")
+                threshold_row = df.select("threshold_pct").first()
+                threshold = threshold_row[0] if threshold_row else "N/A"
+                lines.append(f"\n**Threshold:** {threshold}%")
+
             if row_count == 0:
                 print("  ⚠ Table exists but is empty — was the processor running?")
             else:
                 df.show(5, truncate=False)
+
         except Exception as e:
             print(f"  Not found or error: {e}")
+            lines.append(f"**Error:** {e}\n")
+            summary_counts[name] = None
 
-    print("\n" + "=" * 60)
-    print("Verification complete.")
-    print("=" * 60)
+        lines.append("\n---\n")
+
+    lines.append("## Summary\n")
+    lines.append("| Table | Rows | Status |")
+    lines.append("|-------|------|--------|")
+    for name in tables:
+        count = summary_counts.get(name)
+        if count is None:
+            lines.append(f"| {name} | - | ❌ Error |")
+        elif count > 0:
+            lines.append(f"| {name} | {count:,} | ✅ OK |")
+        else:
+            lines.append(f"| {name} | 0 | ⚠️ Empty |")
+
+    lines.append(f"\n*Report generated by `verify_delta.py` at {datetime.now().isoformat()}*")
+
+    os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
+    report_text = "\n".join(lines)
+    with open(REPORT_PATH, "w", encoding="utf-8") as f:
+        f.write(report_text)
+
+    print(f"\n{'=' * 50}")
+    print(f"Report saved to: {REPORT_PATH}")
+
     spark.stop()
 
 
