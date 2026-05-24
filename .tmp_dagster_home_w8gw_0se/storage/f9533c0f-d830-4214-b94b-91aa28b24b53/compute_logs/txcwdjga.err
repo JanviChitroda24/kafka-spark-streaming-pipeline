@@ -1,0 +1,28 @@
+[32m2026-05-23 22:16:43 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 46761 - LOGS_CAPTURED - Capturing logs for process (pid: 46761).
+[32m2026-05-23 22:16:43 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 46761 - load_to_snowflake - STEP_START - Started execution of step "load_to_snowflake".
+[32m2026-05-23 22:17:10 -0400[0m - dagster - [34mINFO[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - load_to_snowflake - :: loading settings :: url = jar:file:/Users/janvichitroda/Documents/Janvi/NEU/Kaizen/Data_Engineering_Portfolio/kafka-spark-streaming-pipeline/.venv/lib/python3.11/site-packages/pyspark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+============================================================
+SNOWFLAKE LOADER — Streaming Results
+  Target: MARKET_DATA_DB.STREAMING_ANALYTICS
+============================================================
+
+Read 198 rows from /Users/janvichitroda/Documents/Janvi/NEU/Kaizen/Data_Engineering_Portfolio/kafka-spark-streaming-pipeline/data/delta/vwap_1min
+Truncated STREAMING_ANALYTICS.VWAP_1MIN
+✓ Loaded 198 rows → MARKET_DATA_DB.STREAMING_ANALYTICS.VWAP_1MIN
+
+Read 51 rows from /Users/janvichitroda/Documents/Janvi/NEU/Kaizen/Data_Engineering_Portfolio/kafka-spark-streaming-pipeline/data/delta/vwap_5min
+Truncated STREAMING_ANALYTICS.VWAP_5MIN
+✓ Loaded 51 rows → MARKET_DATA_DB.STREAMING_ANALYTICS.VWAP_5MIN
+
+============================================================
+Done! Verify in Snowflake:
+  SELECT * FROM STREAMING_ANALYTICS.VWAP_1MIN LIMIT 10;
+  SELECT COUNT(*) FROM STREAMING_ANALYTICS.VWAP_1MIN;
+  SELECT * FROM STREAMING_ANALYTICS.VWAP_5MIN LIMIT 10;
+============================================================
+
+[32m2026-05-23 22:17:10 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 46761 - load_to_snowflake - STEP_OUTPUT - Yielded output "result" of type "dict". (Type check passed).
+[32m2026-05-23 22:17:10 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - load_to_snowflake - Writing file at: /Users/janvichitroda/Documents/Janvi/NEU/Kaizen/Data_Engineering_Portfolio/kafka-spark-streaming-pipeline/.tmp_dagster_home_w8gw_0se/storage/load_to_snowflake using PickledObjectFilesystemIOManager...
+[32m2026-05-23 22:17:10 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 46761 - load_to_snowflake - ASSET_MATERIALIZATION - Materialized value load_to_snowflake.
+[32m2026-05-23 22:17:10 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 46761 - load_to_snowflake - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2026-05-23 22:17:10 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 46761 - load_to_snowflake - STEP_SUCCESS - Finished execution of step "load_to_snowflake" in 27.05s.

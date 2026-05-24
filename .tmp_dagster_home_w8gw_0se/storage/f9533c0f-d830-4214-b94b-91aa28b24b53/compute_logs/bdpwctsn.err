@@ -1,0 +1,10 @@
+[32m2026-05-23 22:14:55 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45907 - LOGS_CAPTURED - Capturing logs for process (pid: 45907).
+[32m2026-05-23 22:14:55 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45907 - process_stream - STEP_START - Started execution of step "process_stream".
+[32m2026-05-23 22:14:55 -0400[0m - dagster - [34mINFO[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - process_stream - Starting Spark Structured Streaming processor...
+[32m2026-05-23 22:14:55 -0400[0m - dagster - [34mINFO[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - process_stream - Waiting 90 seconds for Spark to process...
+[32m2026-05-23 22:16:25 -0400[0m - dagster - [34mINFO[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - process_stream - Spark processor completed.
+[32m2026-05-23 22:16:25 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45907 - process_stream - STEP_OUTPUT - Yielded output "result" of type "dict". (Type check passed).
+[32m2026-05-23 22:16:25 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - process_stream - Writing file at: /Users/janvichitroda/Documents/Janvi/NEU/Kaizen/Data_Engineering_Portfolio/kafka-spark-streaming-pipeline/.tmp_dagster_home_w8gw_0se/storage/process_stream using PickledObjectFilesystemIOManager...
+[32m2026-05-23 22:16:25 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45907 - process_stream - ASSET_MATERIALIZATION - Materialized value process_stream.
+[32m2026-05-23 22:16:25 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45907 - process_stream - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2026-05-23 22:16:25 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45907 - process_stream - STEP_SUCCESS - Finished execution of step "process_stream" in 1m30s.

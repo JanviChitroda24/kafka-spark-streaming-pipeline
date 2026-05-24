@@ -1,0 +1,23 @@
+[32m2026-05-23 22:12:53 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45800 - LOGS_CAPTURED - Capturing logs for process (pid: 45800).
+[32m2026-05-23 22:12:53 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45800 - produce_trades - STEP_START - Started execution of step "produce_trades".
+[32m2026-05-23 22:12:53 -0400[0m - dagster - [34mINFO[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - produce_trades - Starting producer: mode=simulated, eps=100, duration=120
+[32m2026-05-23 22:14:54 -0400[0m - dagster - [34mINFO[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - produce_trades - Producer output: [SIMULATOR] Starting: 100 eps, 120s duration
+  Sent 1,000 events (100/sec)
+  Sent 2,000 events (100/sec)
+  Sent 3,000 events (100/sec)
+  Sent 4,000 events (100/sec)
+  Sent 5,000 events (100/sec)
+  Sent 6,000 events (100/sec)
+  Sent 7,000 events (100/sec)
+  Sent 8,000 events (100/sec)
+  Sent 9,000 events (100/sec)
+  Sent 10,000 events (100/sec)
+  Sent 11,000 events (100/sec)
+  Sent 12,000 events (100/sec)
+Done. 12,000 events in 120.5s (100/sec)
+
+[32m2026-05-23 22:14:54 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45800 - produce_trades - STEP_OUTPUT - Yielded output "result" of type "dict". (Type check passed).
+[32m2026-05-23 22:14:54 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - produce_trades - Writing file at: /Users/janvichitroda/Documents/Janvi/NEU/Kaizen/Data_Engineering_Portfolio/kafka-spark-streaming-pipeline/.tmp_dagster_home_w8gw_0se/storage/produce_trades using PickledObjectFilesystemIOManager...
+[32m2026-05-23 22:14:54 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45800 - produce_trades - ASSET_MATERIALIZATION - Materialized value produce_trades.
+[32m2026-05-23 22:14:54 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45800 - produce_trades - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2026-05-23 22:14:54 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f9533c0f-d830-4214-b94b-91aa28b24b53 - 45800 - produce_trades - STEP_SUCCESS - Finished execution of step "produce_trades" in 2m0s.
