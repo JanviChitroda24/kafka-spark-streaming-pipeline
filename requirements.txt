@@ -8,5 +8,6 @@ dagster-webserver==1.13.5
 pandas==2.2.2
 pyarrow==17.0.0
 tabulate==0.9.0
+rich==13.9.4
 python-dotenv==1.0.1
 pytest==8.3.3
