@@ -22,26 +22,11 @@ cd src && python live_dashboard.py
 
 ## Architecture
 
-```
-Finnhub WebSocket (or trade simulator)
-              │
-              ▼
-    Python Kafka Producer  ──►  Redpanda: stock_trades (3 partitions, keyed by ticker)
-              │
-              ▼
-    Spark Structured Streaming (4 queries, 10s micro-batch trigger)
-              │
-              ├── raw_trades      (bronze — append-only event log)
-              ├── vwap_1min       (silver — 1-min tumbling windows)
-              ├── vwap_5min       (silver — 5-min tumbling windows)
-              └── anomaly_alerts  (gold — ±2% window bounds)
-              │
-              ▼
-    Dagster (5 assets)  ──►  Snowflake MARKET_DATA_DB.STREAMING_ANALYTICS
-              │
-              ▼
-    Operational tools: dashboard · reconciliation · integration test · recovery test
-```
+![Pipeline Architecture](diagrams/architecture.png)
+
+> Source: [`diagrams/architecture.mermaid`](diagrams/architecture.mermaid) · Also available: [`architecture.svg`](diagrams/architecture.svg)
+
+**Layers at a glance:** Finnhub / simulator → Redpanda → Spark (4 queries) → Delta Lake (4 tables) → DQ checks → Snowflake. Dagster orchestrates the production path; dashboard and reconciliation run on-demand.
 
 | Layer | Technology | Role |
 |-------|------------|------|

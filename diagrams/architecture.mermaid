@@ -1,0 +1,70 @@
+graph TD
+    subgraph "Data Sources"
+        FH[Finnhub Live]
+        SIM[Trade Simulator]
+    end
+
+    subgraph "Message Broker"
+        K[Kafka / Redpanda<br/>stock_trades · 3 partitions]
+    end
+
+    subgraph "Stream Processing"
+        SP[Spark Structured Streaming<br/>4 queries · watermark 10s]
+    end
+
+    subgraph "Delta Lake"
+        RT[raw_trades]
+        V1[vwap_1min]
+        V5[vwap_5min]
+        AA[anomaly_alerts]
+    end
+
+    subgraph "Quality Gate"
+        DQ[7 Data Quality Checks]
+    end
+
+    subgraph "Analytics"
+        SF[Snowflake<br/>STREAMING_ANALYTICS]
+    end
+
+    subgraph "Orchestration"
+        DAG[Dagster<br/>5 assets · daily 5PM]
+    end
+
+    subgraph "Monitoring"
+        DASH[Live Dashboard]
+        BR[Batch Reconciliation]
+    end
+
+    FH --> K
+    SIM --> K
+    K --> SP
+    SP --> RT
+    SP --> V1
+    SP --> V5
+    SP --> AA
+    V1 --> DQ
+    V5 --> DQ
+    DQ --> SF
+    RT --> BR
+    V1 --> BR
+    RT --> DASH
+    V1 --> DASH
+    AA --> DASH
+    DAG -.-> SP
+    DAG -.-> DQ
+    DAG -.-> SF
+
+    style FH fill:#d4edda,stroke:#28a745,color:#155724
+    style SIM fill:#d4edda,stroke:#28a745,color:#155724
+    style K fill:#f8d7da,stroke:#dc3545,color:#721c24
+    style SP fill:#e8daef,stroke:#8e44ad,color:#4a235a
+    style RT fill:#d1ecf1,stroke:#17a2b8,color:#0c5460
+    style V1 fill:#d1ecf1,stroke:#17a2b8,color:#0c5460
+    style V5 fill:#d1ecf1,stroke:#17a2b8,color:#0c5460
+    style AA fill:#d1ecf1,stroke:#17a2b8,color:#0c5460
+    style DQ fill:#fff3cd,stroke:#ffc107,color:#856404
+    style SF fill:#cce5ff,stroke:#0d6efd,color:#004085
+    style DAG fill:#fce4ec,stroke:#e91e63,color:#880e4f
+    style DASH fill:#e2e3e5,stroke:#6c757d,color:#383d41
+    style BR fill:#e2e3e5,stroke:#6c757d,color:#383d41
