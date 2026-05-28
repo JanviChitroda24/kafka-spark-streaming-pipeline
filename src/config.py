@@ -4,7 +4,11 @@ All connection details, paths, and tuning parameters in one place.
 Other modules import from here — never hardcode values.
 """
 
+from dotenv import load_dotenv
 import os
+
+# Load .env BEFORE any os.getenv calls
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 # Resolve paths relative to repo root — scripts run from src/ but data/ lives at repo root
 _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))

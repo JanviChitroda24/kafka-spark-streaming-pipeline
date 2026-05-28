@@ -49,7 +49,6 @@ def build_dashboard() -> Panel:
     vwap_table.add_column("VWAP", justify="right", width=10)
     vwap_table.add_column("Volume", justify="right", width=12)
     vwap_table.add_column("Trades", justify="right", width=8)
-    vwap_table.add_column("Buy %", justify="right", width=8)
 
     try:
         vwap = spark.read.format("delta").load(DELTA_VWAP_1MIN)
@@ -67,12 +66,11 @@ def build_dashboard() -> Panel:
                     f"${float(row['vwap']):.2f}",
                     f"{row['total_volume']:,}",
                     str(row["trade_count"]),
-                    f"{float(row['buy_pressure']):.1f}%",
                 )
         else:
-            vwap_table.add_row("—", "No data", "—", "—", "—")
+            vwap_table.add_row("—", "No data", "—", "—")
     except Exception:
-        vwap_table.add_row("—", "No data", "—", "—", "—")
+        vwap_table.add_row("—", "No data", "—", "—")
 
     # --- Health: row counts + latest event_time (freshness indicator) ---
     stats_table = Table(title="Pipeline Health", show_lines=False)

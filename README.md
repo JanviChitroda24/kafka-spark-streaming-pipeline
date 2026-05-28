@@ -10,7 +10,7 @@ A production-style real-time stock trade pipeline: ingest live market events via
 
 ## Live Dashboard
 
-![Live Terminal Dashboard](diagrams/05_dashboard.png)
+![Live Terminal Dashboard](diagrams/dashboard_live.png)
 
 Real-time VWAP, pipeline health, and anomaly bounds — refreshes every 15 seconds while the pipeline runs.
 
