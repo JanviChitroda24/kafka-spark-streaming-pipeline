@@ -1,3 +1,4 @@
+# Author: Janvi Chitroda | github.com/JanviChitroda24
 """
 Dagster Definitions — jobs, schedules, and asset registry.
 

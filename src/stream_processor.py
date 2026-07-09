@@ -1,3 +1,4 @@
+# Author: Janvi Chitroda | github.com/JanviChitroda24
 """
 Core Streaming Processor: Kafka → Spark Structured Streaming → Delta Lake
 

@@ -1,3 +1,4 @@
+# Author: Janvi Chitroda | github.com/JanviChitroda24
 """
 Centralized configuration for the streaming pipeline.
 All connection details, paths, and tuning parameters in one place.

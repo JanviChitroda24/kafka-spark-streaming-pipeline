@@ -1,3 +1,4 @@
+# Author: Janvi Chitroda | github.com/JanviChitroda24
 """
 Exactly-Once Recovery Test — SIGKILL crash + deduplication verification.
 

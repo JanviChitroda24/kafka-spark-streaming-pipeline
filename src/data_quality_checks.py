@@ -1,3 +1,4 @@
+# Author: Janvi Chitroda | github.com/JanviChitroda24
 """
 Data Quality Checks — 7 validation checks on streaming VWAP output.
 

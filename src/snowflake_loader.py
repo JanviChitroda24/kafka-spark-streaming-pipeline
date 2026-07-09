@@ -1,3 +1,4 @@
+# Author: Janvi Chitroda | github.com/JanviChitroda24
 """
 Load Delta Lake VWAP tables into Snowflake STREAMING_ANALYTICS schema.
 
